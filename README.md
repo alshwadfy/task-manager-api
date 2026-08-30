@@ -42,7 +42,6 @@ A **production-grade RESTful backend** for managing task lists and tasks, built 
 ```bash
 # 1. Clone the repository
 git clone <https://github.com/alshwadfy/TaskManager>
-cd "project 2/Tasks"
 
 # 2. Create your environment variables file
 cp .env.example .env
