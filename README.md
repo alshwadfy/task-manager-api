@@ -25,7 +25,7 @@ A **production-grade RESTful backend** for managing task lists and tasks, built 
 ## ✨ Features
 
 - 🔐 **JWT Authentication** — Stateless token-based auth with BCrypt password hashing
-- 📄 **Pagination & Sorting** — Spring Data `Pageable` with full page metadata (`totalPages`, `totalElements`)
+- 📄 **Pagination & Sorting** — Spring Data `Pageable` with full page metadata
 - 🛡️ **Global Exception Handling** — Centralized `@ControllerAdvice` with structured error responses
 - 🗂️ **DTO Layer** — Clean separation between database entities and API responses via mappers
 - ✅ **32 Automated Tests** — Unit tests (Mockito) + Web layer integration tests (MockMvc)
@@ -35,19 +35,28 @@ A **production-grade RESTful backend** for managing task lists and tasks, built 
 
 ---
 
+## 🖥️ Full Stack Version
+
+This repository contains the **backend API only**.
+
+A complete frontend is available and fully integrated with this API:
+
+👉 **[TaskManager Frontend](https://github.com/alshwadfy/TaskManager)**
+
+### To run the full stack:
+1. Clone and run this backend first
+2. Clone the frontend repo and follow its README
+
+---
+
 ## 🚀 Quick Start
 
 ### Option 1: Docker Compose (Recommended)
 
 ```bash
-# 1. Clone the repository
-git clone <https://github.com/alshwadfy/TaskManager>
-
-# 2. Create your environment variables file
+git clone https://github.com/alshwadfy/task-manager-api
+cd task-manager-api
 cp .env.example .env
-# Edit .env with your desired passwords
-
-# 3. Start the full stack (PostgreSQL + Spring Boot)
 docker compose up --build
 ```
 
@@ -60,11 +69,7 @@ App is live at: `http://localhost:8080`
 **Prerequisites:** Java 21+, Maven, PostgreSQL running on port 5432
 
 ```bash
-# Clone and navigate
-cd "project 2/Tasks"
-
-# Set up your database (update application.properties if needed)
-# Then run:
+git clone https://github.com/alshwadfy/task-manager-api
 ./mvnw spring-boot:run
 ```
 
@@ -72,15 +77,12 @@ cd "project 2/Tasks"
 
 ## 📖 API Documentation (Swagger UI)
 
-Once the app is running, open your browser:
-
 **`http://localhost:8080/swagger-ui.html`**
 
-The interactive UI lets you:
-1. **Register** a new user via `POST /api/auth/register`
+1. **Register** via `POST /api/auth/register`
 2. **Login** via `POST /api/auth/login` and copy your JWT token
-3. Click the 🔓 **Authorize** button and paste `Bearer <your-token>`
-4. Test all secured endpoints directly from the browser!
+3. Click 🔓 **Authorize** and paste `Bearer <your-token>`
+4. Test all secured endpoints directly!
 
 ---
 
@@ -95,8 +97,8 @@ The interactive UI lets you:
 ### 📁 Task Lists
 | Method | Endpoint | Description | Auth |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/task-lists?userId={id}&page=0&size=10` | Get paginated task lists for a user | 🔐 JWT |
-| `POST` | `/api/task-lists?userId={id}` | Create a new task list | 🔐 JWT |
+| `GET` | `/api/task-lists?page=0&size=10` | Get paginated task lists | 🔐 JWT |
+| `POST` | `/api/task-lists` | Create a new task list | 🔐 JWT |
 | `GET` | `/api/task-lists/{id}` | Get a task list by ID | 🔐 JWT |
 | `PUT` | `/api/task-lists/{id}` | Update a task list | 🔐 JWT |
 | `DELETE` | `/api/task-lists/{id}` | Delete a task list | 🔐 JWT |
@@ -104,7 +106,7 @@ The interactive UI lets you:
 ### ✅ Tasks
 | Method | Endpoint | Description | Auth |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/task-lists/{listId}/tasks?page=0&size=10` | Get paginated tasks in a list | 🔐 JWT |
+| `GET` | `/api/task-lists/{listId}/tasks?page=0&size=10` | Get paginated tasks | 🔐 JWT |
 | `POST` | `/api/task-lists/{listId}/tasks` | Create a task | 🔐 JWT |
 | `GET` | `/api/task-lists/{listId}/tasks/{taskId}` | Get a task by ID | 🔐 JWT |
 | `PUT` | `/api/task-lists/{listId}/tasks/{taskId}` | Update a task | 🔐 JWT |
@@ -119,9 +121,9 @@ The interactive UI lets you:
 ```
 
 **32 tests across 4 test suites:**
-- `AuthControllerTest` — 3 MockMvc web layer tests
-- `TaskListControllerTest` — 7 MockMvc web layer tests
-- `TasksControllerTest` — 6 MockMvc web layer tests
+- `AuthControllerTest` — 3 MockMvc tests
+- `TaskListControllerTest` — 7 MockMvc tests
+- `TasksControllerTest` — 6 MockMvc tests
 - `UserServiceImplTest` — 15 Mockito unit tests
 
 ---
@@ -131,19 +133,19 @@ The interactive UI lets you:
 ```
 src/
 ├── main/java/com/projects/Tasks/
-│   ├── config/                  # SecurityConfig, OpenApiConfig
-│   ├── Controller/              # REST Controllers + GlobalExceptionHandler
+│   ├── config/
+│   ├── Controller/
 │   ├── domain/
-│   │   ├── dto/                 # Request/Response DTOs
-│   │   └── entities/            # JPA Entities
-│   ├── exceptions/              # Custom Exceptions
-│   ├── mappers/                 # Entity ↔ DTO Mappers
-│   ├── repositories/            # Spring Data JPA Repositories
-│   ├── security/                # JwtService, JwtAuthFilter
-│   └── services/                # Service Interfaces & Implementations
+│   │   ├── dto/
+│   │   └── entities/
+│   ├── exceptions/
+│   ├── mappers/
+│   ├── repositories/
+│   ├── security/
+│   └── services/
 └── test/java/com/projects/Tasks/
-    ├── Controller/              # MockMvc Integration Tests
-    └── Services/                # Mockito Unit Tests
+    ├── Controller/
+    └── Services/
 ```
 
 ---
@@ -153,35 +155,27 @@ src/
 ```
 ┌─────────────────────────────────┐
 │         docker compose          │
-│                                 │
 │  ┌──────────────────────────┐   │
-│  │  app (Spring Boot)       │   │
-│  │  Port: 8080              │◄──┼── REST Requests
+│  │  app (Spring Boot)       │◄──┼── REST Requests
 │  │  Multi-stage Docker Build │  │
 │  └──────────┬───────────────┘   │
-│             │ depends_on        │
 │             ▼ (healthcheck)     │
 │  ┌──────────────────────────┐   │
 │  │  db (PostgreSQL 16)      │   │
-│  │  Port: 5432              │   │
 │  │  Volume: postgres_data   │   │
 │  └──────────────────────────┘   │
 └─────────────────────────────────┘
 ```
 
-Multi-stage build reduces image size from **~800MB → ~180MB** by using `eclipse-temurin:21-jre-alpine` at runtime.
+Multi-stage build: **~800MB → ~180MB**
 
 ---
 
 ## 🔒 Security Configuration
 
-All secrets are externalized via `.env` (never committed to Git):
-
 ```bash
-# Copy the template
 cp .env.example .env
 
-# Fill in your values in .env:
 POSTGRES_DB=taskmanager
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=your_secure_password
@@ -190,11 +184,11 @@ JWT_SECRET=your_jwt_secret_key
 
 ---
 
-## 📌 Environment Variables Reference
+## 📌 Environment Variables
 
-| Variable | Description | Default (local) |
-| :--- | :--- | :--- |
-| `SPRING_DATASOURCE_URL` | PostgreSQL JDBC URL | `jdbc:postgresql://localhost:5432/postgres` |
-| `SPRING_DATASOURCE_USERNAME` | Database username | `postgres` |
-| `SPRING_DATASOURCE_PASSWORD` | Database password | `password` |
-| `SPRING_JPA_HIBERNATE_DDL_AUTO` | Schema strategy | `update` |
+| Variable | Description |
+| :--- | :--- |
+| `SPRING_DATASOURCE_URL` | PostgreSQL JDBC URL |
+| `SPRING_DATASOURCE_USERNAME` | Database username |
+| `SPRING_DATASOURCE_PASSWORD` | Database password |
+| `SPRING_JPA_HIBERNATE_DDL_AUTO` | Schema strategy |
