@@ -2,6 +2,7 @@ package com.projects.Tasks.domain.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -22,20 +23,54 @@ public class User {
     @Column(name = "username",nullable = false, unique = true)
     private String username;
 
+    @Column(name="verified")
+    private Boolean verified=false;
+
+    @Column(name="verification_code")
+    private String verificationCode;
+
+    @Column(name="verification_code_expires_at")
+    private LocalDateTime verificationCodeExpiresAt;
+
     @OneToMany(mappedBy = "user")
     private List<TaskList> taskLists;
 
     public User() {}
 
 
-    public User(UUID userId, String username,String email, String password, List<TaskList> taskLists) {
+    public User(UUID userId, String username,String email, String password, List<TaskList> taskLists,Boolean verified) {
         this.userId = userId;
         this.username=username;
         this.email = email;
         this.password = password;
         this.taskLists = taskLists;
+        this.verified=verified;
     }
 
+    
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public LocalDateTime getVerificationCodeExpiresAt() {
+        return verificationCodeExpiresAt;
+    }
+
+    public void setVerificationCodeExpiresAt(LocalDateTime verificationCodeExpiresAt) {
+        this.verificationCodeExpiresAt = verificationCodeExpiresAt;
+    }
     public String getUsername() {
         return username;
     }

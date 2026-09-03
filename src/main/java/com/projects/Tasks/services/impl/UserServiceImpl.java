@@ -83,6 +83,9 @@ public class UserServiceImpl implements UserService {
         if(userRepo.existsByUsername(registerRequest.username())){
             throw new IllegalArgumentException("username already registered");
         }
+        if () {
+            
+        }
         String hashed = passwordEncoder.encode(registerRequest.password());
         User user = new User(null, registerRequest.username(), registerRequest.email(), hashed, null);
         return userRepo.save(user);
