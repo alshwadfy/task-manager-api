@@ -25,10 +25,11 @@ A **production-grade RESTful backend** for managing task lists and tasks, built 
 ## ✨ Features
 
 - 🔐 **JWT Authentication** — Stateless token-based auth with BCrypt password hashing
+- 📧 **Email Verification** — 6-digit code verification with 24-hour expiration via SMTP / Spring Mail
 - 📄 **Pagination & Sorting** — Spring Data `Pageable` with full page metadata
 - 🛡️ **Global Exception Handling** — Centralized `@ControllerAdvice` with structured error responses
 - 🗂️ **DTO Layer** — Clean separation between database entities and API responses via mappers
-- ✅ **32 Automated Tests** — Unit tests (Mockito) + Web layer integration tests (MockMvc)
+- ✅ **50 Automated Tests** — Unit tests (Mockito) + Web layer integration tests (MockMvc)
 - 🐳 **Docker Ready** — Multi-stage Dockerfile + Docker Compose with PostgreSQL orchestration
 - 🔒 **Secrets Management** — Environment variables via `.env` file, never hardcoded
 - 📖 **Swagger UI** — Interactive API documentation with JWT authorization support
@@ -79,10 +80,11 @@ git clone https://github.com/alshwadfy/task-manager-api
 
 **`http://localhost:8080/swagger-ui.html`**
 
-1. **Register** via `POST /api/auth/register`
-2. **Login** via `POST /api/auth/login` and copy your JWT token
-3. Click 🔓 **Authorize** and paste `Bearer <your-token>`
-4. Test all secured endpoints directly!
+1. **Register** via `POST /api/auth/register` (receives verification email)
+2. **Verify Email** via `POST /api/auth/verify`
+3. **Login** via `POST /api/auth/login` and copy your JWT token
+4. Click 🔓 **Authorize** and paste `Bearer <your-token>`
+5. Test all secured endpoints directly!
 
 ---
 
@@ -91,8 +93,10 @@ git clone https://github.com/alshwadfy/task-manager-api
 ### 🔐 Auth
 | Method | Endpoint | Description | Auth |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/register` | Register a new user | Public |
-| `POST` | `/api/auth/login` | Login & receive JWT token | Public |
+| `POST` | `/api/auth/register` | Register a new user & trigger verification email | Public |
+| `POST` | `/api/auth/verify` | Verify email with 6-digit code | Public |
+| `POST` | `/api/auth/resend-verification` | Resend verification email code | Public |
+| `POST` | `/api/auth/login` | Login & receive JWT token (verified accounts) | Public |
 
 ### 📁 Task Lists
 | Method | Endpoint | Description | Auth |
@@ -120,11 +124,14 @@ git clone https://github.com/alshwadfy/task-manager-api
 ./mvnw test
 ```
 
-**32 tests across 4 test suites:**
-- `AuthControllerTest` — 3 MockMvc tests
+**50 tests across 6 test suites:**
+- `AuthControllerTest` — 8 MockMvc tests
 - `TaskListControllerTest` — 7 MockMvc tests
 - `TasksControllerTest` — 6 MockMvc tests
-- `UserServiceImplTest` — 15 Mockito unit tests
+- `UserServiceImplTest` — 19 Mockito unit tests
+- `VerificationTokenServiceImplTest` — 7 Mockito unit tests
+- `EmailServiceImplTest` — 2 Mockito unit tests
+- `TasksApplicationTests` — 1 context / smoke test
 
 ---
 
@@ -180,6 +187,8 @@ POSTGRES_DB=taskmanager
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=your_secure_password
 JWT_SECRET=your_jwt_secret_key
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-app-specific-password
 ```
 
 ---
@@ -192,3 +201,6 @@ JWT_SECRET=your_jwt_secret_key
 | `SPRING_DATASOURCE_USERNAME` | Database username |
 | `SPRING_DATASOURCE_PASSWORD` | Database password |
 | `SPRING_JPA_HIBERNATE_DDL_AUTO` | Schema strategy |
+| `JWT_SECRET` | Secret key for JWT signing |
+| `MAIL_USERNAME` | SMTP username / sender email |
+| `MAIL_PASSWORD` | SMTP password / app password |

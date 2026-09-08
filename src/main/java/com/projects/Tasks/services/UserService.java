@@ -16,6 +16,7 @@ public interface UserService {
 
     Page<TaskListDto> getTaskListsByUserId(UUID userId, Pageable pageable);
     User getUserById(UUID userId);
+    User getUserByEmail(String email);
     User createUser(RegisterRequest registerRequest);
     User login(String email, String password);
     void deleteAllUser();

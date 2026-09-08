@@ -22,6 +22,7 @@ private final TaskListImpl taskListImpl;
                 user.getUserId(),
                 user.getUsername(),
                 user.getEmail(),
+                user.getVerified(),
                 Optional.ofNullable(user.getTaskLists())
                         .map(tasks -> tasks.stream().map(taskListImpl::toDto).toList())
                         .orElse(List.of())

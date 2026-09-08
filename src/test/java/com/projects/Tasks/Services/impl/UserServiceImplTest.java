@@ -66,7 +66,8 @@ public class UserServiceImplTest {
             registerRequest.username(),
             registerRequest.email(),
             "Hpassword", 
-            null
+            null,
+            false
         );
         when(userRepo.save(any(User.class))).thenReturn(user);
 
@@ -132,7 +133,7 @@ public class UserServiceImplTest {
 
     @Test
     public void loginSucceded(){
-        User user = new User(UUID.randomUUID(),"ezz","ezz@gmail.com","Hpassword",null);
+        User user = new User(UUID.randomUUID(),"ezz","ezz@gmail.com","Hpassword",null, true);
         when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches("pass",user.getPassword())).thenReturn(true);
         User result = userService.login(user.getEmail(),"pass");
@@ -141,9 +142,22 @@ public class UserServiceImplTest {
         verify(userRepo,times(1)).findByEmail(user.getEmail());
         verify(passwordEncoder,times(1)).matches("pass",user.getPassword());
     }
+
+    @Test
+    public void loginFailed_WhenEmailNotVerified(){
+        User user = new User(UUID.randomUUID(),"ezz","ezz@gmail.com","Hpassword",null, false);
+        when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("pass",user.getPassword())).thenReturn(true);
+        Exception exception = assertThrows(IllegalArgumentException.class,
+            () -> userService.login(user.getEmail(),"pass"));
+        assertEquals("Email not verified. Please verify your email before logging in.", exception.getMessage());
+        verify(userRepo,times(1)).findByEmail(user.getEmail());
+        verify(passwordEncoder,times(1)).matches("pass",user.getPassword());
+    }
+
     @Test
     public void loginFailed_WhenEmailNotFoud(){
-        User user = new User(UUID.randomUUID(),"ezz","ezz@gmail.com","Hpassword",null);
+        User user = new User(UUID.randomUUID(),"ezz","ezz@gmail.com","Hpassword",null, true);
         when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.empty());
         Exception exception = assertThrows(IllegalArgumentException.class,
             () -> userService.login(user.getEmail(),"pass"));
@@ -151,9 +165,10 @@ public class UserServiceImplTest {
         verify(userRepo,times(1)).findByEmail(user.getEmail());
         verify(passwordEncoder,never()).matches(anyString(),anyString());
     }
+
     @Test
     public void loginFailed_WhenPasswordIncorrect(){
-        User user = new User(UUID.randomUUID(),"ezz","ezz@gmail.com","Hpassword",null);
+        User user = new User(UUID.randomUUID(),"ezz","ezz@gmail.com","Hpassword",null, true);
         when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches("pass",user.getPassword())).thenReturn(false);
         Exception exception = assertThrows(IllegalArgumentException.class,
@@ -162,6 +177,34 @@ public class UserServiceImplTest {
         verify(userRepo,times(1)).findByEmail(user.getEmail());
         verify(passwordEncoder,times(1)).matches("pass",user.getPassword());
     }
+
+    @Test
+    public void getUserByEmail_Succeded(){
+        User user = new User(UUID.randomUUID(),"ezz","ezz@gmail.com","Hpassword",null, true);
+        when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        User result = userService.getUserByEmail(user.getEmail());
+        assertNotNull(result);
+        assertEquals("ezz", result.getUsername());
+        verify(userRepo,times(1)).findByEmail(user.getEmail());
+    }
+
+    @Test
+    public void getUserByEmail_Failed_WhenEmailIsNull(){
+        Exception exception = assertThrows(IllegalArgumentException.class,
+            () -> userService.getUserByEmail(null));
+        assertEquals("email cannot be null or empty", exception.getMessage());
+        verify(userRepo,never()).findByEmail(anyString());
+    }
+
+    @Test
+    public void getUserByEmail_Failed_WhenUserNotFound(){
+        when(userRepo.findByEmail("notfound@example.com")).thenReturn(Optional.empty());
+        Exception exception = assertThrows(ResourceNotFoundException.class,
+            () -> userService.getUserByEmail("notfound@example.com"));
+        assertEquals("User with email notfound@example.com not found", exception.getMessage());
+        verify(userRepo,times(1)).findByEmail("notfound@example.com");
+    }
+
     @Test
     public void getUserById_Succeded(){
         User user = new User(UUID.randomUUID(),"ezz","ezz@gmail.com","Hpassword",null);

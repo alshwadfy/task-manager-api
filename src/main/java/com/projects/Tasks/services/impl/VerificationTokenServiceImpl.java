@@ -11,12 +11,13 @@ import java.util.Random;
 @Service
 public class VerificationTokenServiceImpl implements VerificationTokenService {
 
-    @Autowired
-    private UserRepo userRepository;
-
-    private static final int CODE_LENGTH = 6;
+    private final UserRepo userRepository;
     private static final int EXPIRY_HOURS = 24;
     private static final Random random = new Random();
+
+    public VerificationTokenServiceImpl(UserRepo userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public String generateAndStoreVerificationCode(User user) {
@@ -30,30 +31,29 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
         // Save to database
         userRepository.save(user);
         
-        System.out.println("✅ Generated code for " + user.getEmail() + ": " + code);
-        
         return code;
     }
 
     @Override
     public boolean validateVerificationCode(String email, String code) {
+        if (email == null || code == null) {
+            return false;
+        }
+
         // Find user
         User user = userRepository.findByEmail(email).orElse(null);
         
         if (user == null) {
-            System.err.println("❌ User not found: " + email);
             return false;
         }
         
         // Check if expired
         if (isVerificationCodeExpired(user)) {
-            System.err.println("❌ Code expired for: " + email);
             return false;
         }
         
         // Check if code matches
-        if (!user.getVerificationCode().equals(code)) {
-            System.err.println("❌ Invalid code for: " + email);
+        if (user.getVerificationCode() == null || !user.getVerificationCode().equals(code)) {
             return false;
         }
         
@@ -63,14 +63,12 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
         user.setVerificationCodeExpiresAt(null);
         userRepository.save(user);
         
-        System.out.println("✅ Email verified for: " + email);
-        
         return true;
     }
 
     @Override
     public boolean isVerificationCodeExpired(User user) {
-        if (user.getVerificationCodeExpiresAt() == null) {
+        if (user == null || user.getVerificationCodeExpiresAt() == null) {
             return true;
         }
         return LocalDateTime.now().isAfter(user.getVerificationCodeExpiresAt());

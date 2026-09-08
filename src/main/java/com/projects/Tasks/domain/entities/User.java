@@ -38,13 +38,17 @@ public class User {
     public User() {}
 
 
+    public User(UUID userId, String username, String email, String password, List<TaskList> taskLists) {
+        this(userId, username, email, password, taskLists, false);
+    }
+
     public User(UUID userId, String username,String email, String password, List<TaskList> taskLists,Boolean verified) {
         this.userId = userId;
         this.username=username;
         this.email = email;
         this.password = password;
         this.taskLists = taskLists;
-        this.verified=verified;
+        this.verified=verified != null ? verified : false;
     }
 
     

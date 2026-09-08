@@ -7,6 +7,10 @@ public record UserDto(
         UUID id,
         String username,
         String email,
-        List <TaskListDto> taskLists
+        Boolean verified,
+        List<TaskListDto> taskLists
 ) {
+    public UserDto(UUID id, String username, String email, List<TaskListDto> taskLists) {
+        this(id, username, email, false, taskLists);
+    }
 }
