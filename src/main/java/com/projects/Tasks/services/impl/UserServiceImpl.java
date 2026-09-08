@@ -4,6 +4,7 @@ import com.projects.Tasks.domain.dto.RegisterRequest;
 import com.projects.Tasks.domain.dto.TaskListDto;
 
 import com.projects.Tasks.domain.entities.User;
+import com.projects.Tasks.exceptions.EmailNotVerifiedException;
 import com.projects.Tasks.mappers.TaskListMapper;
 import com.projects.Tasks.repositories.TaskListRepo;
 import com.projects.Tasks.repositories.UserRepo;
@@ -67,6 +68,15 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    public User getUserByEmail(String email) {
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("email cannot be null or empty");
+        }
+        return userRepo.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " not found"));
+    }
+
+    @Override
     public User createUser(RegisterRequest registerRequest) {
         if (null == registerRequest.username() || registerRequest.username().isBlank()) {
             throw new IllegalArgumentException("username is required");
@@ -83,11 +93,8 @@ public class UserServiceImpl implements UserService {
         if(userRepo.existsByUsername(registerRequest.username())){
             throw new IllegalArgumentException("username already registered");
         }
-        if () {
-            
-        }
         String hashed = passwordEncoder.encode(registerRequest.password());
-        User user = new User(null, registerRequest.username(), registerRequest.email(), hashed, null);
+        User user = new User(null, registerRequest.username(), registerRequest.email(), hashed, null, false);
         return userRepo.save(user);
     }
 
@@ -98,6 +105,9 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("invalid email or password"));
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("invalid email or password");
+        }
+        if (!Boolean.TRUE.equals(user.getVerified())) {
+            throw new EmailNotVerifiedException("Email not verified. Please check your inbox and verify your email before logging in.");
         }
         return user;
     }
