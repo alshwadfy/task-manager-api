@@ -1,206 +1,207 @@
 # 📋 Task Manager API
 
-A **production-grade RESTful backend** for managing task lists and tasks, built with Spring Boot 4.
+A **production-grade  RESTful backend** for managing task lists an d tasks, built with Spring Boot 4.
 
-> **Second Spring Boot project** — demonstrating enterprise-level patterns: JWT security, pagination, comprehensive testing, and Docker containerization.
+> **Secon d Spring Boot project** — demonstrating ent erprise-level patterns: JWT security, paginat ion, comprehensive testing, and Docker contai nerization.
 
 ---
 
 ## 🧰 Tech Stack
 
-| Layer | Technology |
+| Layer  | Technology |
 | :--- | :--- |
-| **Language** | Java 21 |
-| **Framework** | Spring Boot 4.1.0 |
-| **Security** | Spring Security 6 + JWT (JJWT 0.12) |
-| **Database** | PostgreSQL 16 |
-| **ORM** | Spring Data JPA / Hibernate |
+| **Language* * | Java 21 |
+| **Framework** | Spring Boot 4 .1.0 |
+| **Security** | Spring Security 6 + J WT (JJWT 0.12) |
+| **Database** | PostgreSQL  16 |
+| **ORM** | Spring Data JPA / Hibernate  |
 | **Build Tool** | Apache Maven |
-| **Containerization** | Docker + Docker Compose |
-| **API Docs** | SpringDoc OpenAPI / Swagger UI |
-| **Testing** | JUnit 5 + Mockito + Spring MockMvc |
+| **Conta inerization** | Docker + Docker Compose |
+| * *API Docs** | SpringDoc OpenAPI / Swagger UI  |
+| **Testing** | JUnit 5 + Mockito + Spring  MockMvc |
 
 ---
 
 ## ✨ Features
 
-- 🔐 **JWT Authentication** — Stateless token-based auth with BCrypt password hashing
-- 📧 **Email Verification** — 6-digit code verification with 24-hour expiration via SMTP / Spring Mail
-- 📄 **Pagination & Sorting** — Spring Data `Pageable` with full page metadata
-- 🛡️ **Global Exception Handling** — Centralized `@ControllerAdvice` with structured error responses
-- 🗂️ **DTO Layer** — Clean separation between database entities and API responses via mappers
-- ✅ **50 Automated Tests** — Unit tests (Mockito) + Web layer integration tests (MockMvc)
-- 🐳 **Docker Ready** — Multi-stage Dockerfile + Docker Compose with PostgreSQL orchestration
-- 🔒 **Secrets Management** — Environment variables via `.env` file, never hardcoded
-- 📖 **Swagger UI** — Interactive API documentation with JWT authorization support
+- 🔐 **JWT  Authentication** — Stateless token-based a uth with BCrypt password hashing
+- 📧 **Ema il Verification** — 6-digit code verificati on with 24-hour expiration via SMTP / Spring  Mail
+- 📄 **Pagination & Sorting** — Spri ng Data `Pageable` with full page metadata
+-  🛡️ **Global Exception Handling** — Cen tralized `@ControllerAdvice` with structured  error responses
+- 🗂️ **DTO Layer** — C lean separation between database entities and  API responses via mappers
+- ✅ **50 Automat ed Tests** — Unit tests (Mockito) + Web lay er integration tests (MockMvc)
+- 🐳 **Docke r Ready** — Multi-stage Dockerfile + Docker  Compose with PostgreSQL orchestration
+- 🔒  **Secrets Management** — Environment varia bles via `.env` file, never hardcoded
+- 📖  **Swagger UI** — Interactive API documentat ion with JWT authorization support
 
 ---
 
-## 🖥️ Full Stack Version
+## � ���️ Full Stack Version
 
-This repository contains the **backend API only**.
+This repository co ntains the **backend API only**.
 
-A complete frontend is available and fully integrated with this API:
+A complete  frontend is available and fully integrated wi th this API:
 
-👉 **[TaskManager Frontend](https://github.com/alshwadfy/TaskManager)**
+👉 **[TaskManager Frontend](h ttps://github.com/alshwadfy/TaskManager)**
 
-### To run the full stack:
-1. Clone and run this backend first
-2. Clone the frontend repo and follow its README
+# ## To run the full stack:
+1. Clone and run th is backend first
+2. Clone the frontend repo a nd follow its README
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Star t
 
-### Option 1: Docker Compose (Recommended)
+### Option 1: Docker Compose (Recommended) 
 
 ```bash
-git clone https://github.com/alshwadfy/task-manager-api
+git clone https://github.com/alshwa dfy/task-manager-api
 cd task-manager-api
-cp .env.example .env
+cp . env.example .env
 docker compose up --build
-```
+`` `
 
 App is live at: `http://localhost:8080`
 
----
+- --
 
 ### Option 2: Run Locally
 
-**Prerequisites:** Java 21+, Maven, PostgreSQL running on port 5432
+**Prerequisite s:** Java 21+, Maven, PostgreSQL running on p ort 5432
 
 ```bash
-git clone https://github.com/alshwadfy/task-manager-api
-./mvnw spring-boot:run
+git clone https://github.co m/alshwadfy/task-manager-api
+./mvnw spring-bo ot:run
 ```
 
 ---
 
-## 📖 API Documentation (Swagger UI)
+## 📖 API Documentation (S wagger UI)
 
-**`http://localhost:8080/swagger-ui.html`**
+**`http://localhost:8080/swagger- ui.html`**
 
-1. **Register** via `POST /api/auth/register` (receives verification email)
-2. **Verify Email** via `POST /api/auth/verify`
-3. **Login** via `POST /api/auth/login` and copy your JWT token
-4. Click 🔓 **Authorize** and paste `Bearer <your-token>`
-5. Test all secured endpoints directly!
+1. **Register** via `POST /api/au th/register` (receives verification email)
+2.  **Verify Email** via `POST /api/auth/verify` 
+3. **Login** via `POST /api/auth/login` and  copy your JWT token
+4. Click 🔓 **Authorize ** and paste `Bearer <your-token>`
+5. Test al l secured endpoints directly!
 
 ---
 
-## 🔗 API Endpoints
+## 🔗 A PI Endpoints
 
 ### 🔐 Auth
-| Method | Endpoint | Description | Auth |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/register` | Register a new user & trigger verification email | Public |
-| `POST` | `/api/auth/verify` | Verify email with 6-digit code | Public |
-| `POST` | `/api/auth/resend-verification` | Resend verification email code | Public |
-| `POST` | `/api/auth/login` | Login & receive JWT token (verified accounts) | Public |
+| Method | Endpoi nt | Description | Auth |
+| :--- | :--- | :-- - | :--- |
+| `POST` | `/api/auth/register` |  Register a new user & trigger verification em ail | Public |
+| `POST` | `/api/auth/verify`  | Verify email with 6-digit code | Public |
+|  `POST` | `/api/auth/resend-verification` | R esend verification email code | Public |
+| `P OST` | `/api/auth/login` | Login & receive JW T token (verified accounts) | Public |
 
-### 📁 Task Lists
-| Method | Endpoint | Description | Auth |
+### � ��� Task Lists
+| Method | Endpoint | Descript ion | Auth |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/task-lists?page=0&size=10` | Get paginated task lists | 🔐 JWT |
-| `POST` | `/api/task-lists` | Create a new task list | 🔐 JWT |
-| `GET` | `/api/task-lists/{id}` | Get a task list by ID | 🔐 JWT |
-| `PUT` | `/api/task-lists/{id}` | Update a task list | 🔐 JWT |
-| `DELETE` | `/api/task-lists/{id}` | Delete a task list | 🔐 JWT |
+|  `GET` | `/api/task-lists?page=0&size=10` | Ge t paginated task lists | 🔐 JWT |
+| `POST`  | `/api/task-lists` | Create a new task list  | 🔐 JWT |
+| `GET` | `/api/task-lists/{id}`  | Get a task list by ID | 🔐 JWT |
+| `PUT`  | `/api/task-lists/{id}` | Update a task lis t | 🔐 JWT |
+| `DELETE` | `/api/task-lists/ {id}` | Delete a task list | 🔐 JWT |
 
-### ✅ Tasks
-| Method | Endpoint | Description | Auth |
+###  ✅ Tasks
+| Method | Endpoint | Description |  Auth |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/task-lists/{listId}/tasks?page=0&size=10` | Get paginated tasks | 🔐 JWT |
-| `POST` | `/api/task-lists/{listId}/tasks` | Create a task | 🔐 JWT |
-| `GET` | `/api/task-lists/{listId}/tasks/{taskId}` | Get a task by ID | 🔐 JWT |
-| `PUT` | `/api/task-lists/{listId}/tasks/{taskId}` | Update a task | 🔐 JWT |
-| `DELETE` | `/api/task-lists/{listId}/tasks/{taskId}` | Delete a task | 🔐 JWT |
+| `GET`  | `/api/task-lists/{listId}/tasks?page=0&siz e=10` | Get paginated tasks | 🔐 JWT |
+| `P OST` | `/api/task-lists/{listId}/tasks` | Cre ate a task | 🔐 JWT |
+| `GET` | `/api/task- lists/{listId}/tasks/{taskId}` | Get a task b y ID | 🔐 JWT |
+| `PUT` | `/api/task-lists/ {listId}/tasks/{taskId}` | Update a task | � �� JWT |
+| `DELETE` | `/api/task-lists/{listI d}/tasks/{taskId}` | Delete a task | 🔐 JWT  |
 
 ---
 
 ## 🧪 Running Tests
 
 ```bash
-./mvnw test
+./mvn w test
 ```
 
-**50 tests across 6 test suites:**
+**50 tests across 6 test suites:* *
 - `AuthControllerTest` — 8 MockMvc tests
-- `TaskListControllerTest` — 7 MockMvc tests
-- `TasksControllerTest` — 6 MockMvc tests
-- `UserServiceImplTest` — 19 Mockito unit tests
-- `VerificationTokenServiceImplTest` — 7 Mockito unit tests
-- `EmailServiceImplTest` — 2 Mockito unit tests
-- `TasksApplicationTests` — 1 context / smoke test
+ - `TaskListControllerTest` — 7 MockMvc test s
+- `TasksControllerTest` — 6 MockMvc tests 
+- `UserServiceImplTest` — 19 Mockito unit  tests
+- `VerificationTokenServiceImplTest` � � 7 Mockito unit tests
+- `EmailServiceImplTes t` — 2 Mockito unit tests
+- `TasksApplicati onTests` — 1 context / smoke test
 
 ---
 
-## 🗂️ Project Structure
+##  🗂️ Project Structure
 
 ```
 src/
-├── main/java/com/projects/Tasks/
-│   ├── config/
+├──  main/java/com/projects/Tasks/
+│   ├─� � config/
 │   ├── Controller/
-│   ├── domain/
+│   � ��── domain/
 │   │   ├── dto/
-│   │   └── entities/
-│   ├── exceptions/
+� ��   │   └── entities/
+│   ├─� � exceptions/
 │   ├── mappers/
-│   ├── repositories/
-│   ├── security/
+│    ├── repositories/
+│   ├── secur ity/
 │   └── services/
-└── test/java/com/projects/Tasks/
-    ├── Controller/
+└── test /java/com/projects/Tasks/
+    ├── Contr oller/
     └── Services/
 ```
 
 ---
 
-## 🐳 Docker Architecture
+## � ��� Docker Architecture
 
 ```
-┌─────────────────────────────────┐
-│         docker compose          │
-│  ┌──────────────────────────┐   │
-│  │  app (Spring Boot)       │◄──┼── REST Requests
-│  │  Multi-stage Docker Build │  │
-│  └──────────┬───────────────┘   │
-│             ▼ (healthcheck)     │
-│  ┌──────────────────────────┐   │
-│  │  db (PostgreSQL 16)      │   │
-│  │  Volume: postgres_data   │   │
-│  └──────────────────────────┘   │
-└─────────────────────────────────┘
+┌────� ��──────────────� ��─────────────┐
+ │         docker compose          │
+│   ┌────────────── ────────────┐   │ 
+│  │  app (Spring Boot)       │◄─� ��┼── REST Requests
+│  │  Multi-sta ge Docker Build │  │
+│  └──── ──────┬──────── ───────┘   │
+│              ▼ (healthcheck)     │
+│  ┌─── ─────────────── ────────┐   │
+│  │  d b (PostgreSQL 16)      │   │
+│  │  Vo lume: postgres_data   │   │
+│  └─� �──────────────� �─────────┘   │
+└─� ��──────────────� ��──────────────� ��─┘
 ```
 
-Multi-stage build: **~800MB → ~180MB**
+Multi-stage build: **~800MB →  ~180MB**
 
 ---
 
-## 🔒 Security Configuration
+## 🔒 Security Configuratio n
 
 ```bash
 cp .env.example .env
 
-POSTGRES_DB=taskmanager
+POSTGRES_DB= taskmanager
 POSTGRES_USER=postgres
-POSTGRES_PASSWORD=your_secure_password
-JWT_SECRET=your_jwt_secret_key
-MAIL_USERNAME=your-email@gmail.com
-MAIL_PASSWORD=your-app-specific-password
+POSTGRES_P ASSWORD=your_secure_password
+JWT_SECRET=your_ jwt_secret_key
+MAIL_USERNAME=your-email@gmail .com
+MAIL_PASSWORD=your-app-specific-password 
 ```
 
 ---
 
 ## 📌 Environment Variables
 
-| Variable | Description |
+| V ariable | Description |
 | :--- | :--- |
-| `SPRING_DATASOURCE_URL` | PostgreSQL JDBC URL |
-| `SPRING_DATASOURCE_USERNAME` | Database username |
-| `SPRING_DATASOURCE_PASSWORD` | Database password |
-| `SPRING_JPA_HIBERNATE_DDL_AUTO` | Schema strategy |
-| `JWT_SECRET` | Secret key for JWT signing |
-| `MAIL_USERNAME` | SMTP username / sender email |
-| `MAIL_PASSWORD` | SMTP password / app password |
+| `SP RING_DATASOURCE_URL` | PostgreSQL JDBC URL |
+ | `SPRING_DATASOURCE_USERNAME` | Database use rname |
+| `SPRING_DATASOURCE_PASSWORD` | Data base password |
+| `SPRING_JPA_HIBERNATE_DDL_A UTO` | Schema strategy |
+| `JWT_SECRET` | Sec ret key for JWT signing |
+| `MAIL_USERNAME` |  SMTP username / sender email |
+| `MAIL_PASSW ORD` | SMTP password / app password |
+ 
