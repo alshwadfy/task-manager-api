@@ -94,10 +94,10 @@ public class AuthControllerTest {
         mockMvc.perform(post("/api/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(registerRequest)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("ezz"))
-                .andExpect(jsonPath("$.email").value("ezz@example.com"))
-                .andExpect(jsonPath("$.verified").value(false));
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.user.username").value("ezz"))
+                .andExpect(jsonPath("$.user.email").value("ezz@example.com"))
+                .andExpect(jsonPath("$.user.verified").value(false));
 
         verify(verificationTokenService).generateAndStoreVerificationCode(user);
         verify(emailService).sendVerificationCode("ezz@example.com", "123456");
@@ -112,7 +112,7 @@ public class AuthControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Email verified successfully"));
+                .andExpect(jsonPath("$.message").value("Email verified successfully! You can now log in."));
     }
 
     @Test

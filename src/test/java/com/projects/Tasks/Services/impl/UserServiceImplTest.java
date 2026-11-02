@@ -10,6 +10,7 @@ import com.projects.Tasks.repositories.UserRepo;
 import com.projects.Tasks.security.JwtService;
 import com.projects.Tasks.services.impl.UserServiceImpl;
 import com.projects.Tasks.exceptions.ResourceNotFoundException;
+import com.projects.Tasks.exceptions.EmailNotVerifiedException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -148,9 +149,9 @@ public class UserServiceImplTest {
         User user = new User(UUID.randomUUID(),"ezz","ezz@gmail.com","Hpassword",null, false);
         when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches("pass",user.getPassword())).thenReturn(true);
-        Exception exception = assertThrows(IllegalArgumentException.class,
+        Exception exception = assertThrows(EmailNotVerifiedException.class,
             () -> userService.login(user.getEmail(),"pass"));
-        assertEquals("Email not verified. Please verify your email before logging in.", exception.getMessage());
+        assertEquals("Email not verified. Please check your inbox and verify your email before logging in.", exception.getMessage());
         verify(userRepo,times(1)).findByEmail(user.getEmail());
         verify(passwordEncoder,times(1)).matches("pass",user.getPassword());
     }

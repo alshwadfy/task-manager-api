@@ -45,6 +45,6 @@ public class EmailServiceImplTest {
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> emailService.sendVerificationCode("user@example.com", "123456"));
 
-        assertEquals("Failed to send verification email", exception.getMessage());
+        assertEquals("Failed to send verification email: Mail server down", exception.getMessage());
     }
 }
